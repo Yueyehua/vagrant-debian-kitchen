@@ -20,4 +20,9 @@ Vagrant.configure(2) do |config|
   config.vm.provision 'shell' do |s|
     s.path = 'provision/setup.sh'
   end
+
+  config.push.define 'atlas' do |push|
+    push.app = 'yueyehua/debian-kitchen'
+    push.vcs = false
+  end
 end

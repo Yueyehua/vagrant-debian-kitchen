@@ -1,6 +1,8 @@
 #!/bin/bash
 
 APT_GET_CMD='/usr/bin/apt-get -qq'
+GEM_CMD='/usr/local/bin/gem'
+GEM_OPTS='-q --no-rdoc --no-ri --no-format-executable --no-user-install'
 
 echo 'debian-kitchen' > /etc/hostname
 
@@ -40,8 +42,7 @@ add-apt-repository \
   "deb http://httpredir.debian.org/debian/ jessie main contrib";
 $APT_GET_CMD update && \
 $APT_GET_CMD -y install docker-engine virtualbox vagrant puppet puppet-lint;
-gem install -q --no-rdoc --no-ri --no-format-executable --no-user-install \
-  chef-dk foodcritic rubocop yaml-lint travis;
+$GEM_CMD install $GEM_OPTS chef-dk foodcritic rubocop yaml-lint travis;
 pip3 install ansible ansible-lint pylint;
 
 # Install other tools for test purpose
@@ -51,15 +52,12 @@ $APT_GET_CMD -y install snmp traceroute nmap
 $APT_GET_CMD clean autoclean;
 
 # Install gems
-gem install -q --no-rdoc --no-ri --no-format-executable --no-user-install \
-  berkshelf bundler busser busser-serverspec serverspec webmock;
+$GEM_CMD install $GEM_OPTS berkshelf bundler busser busser-serverspec \
+  serverspec webmock;
 
 # Install test-kitchen
-gem install -q --no-rdoc --no-ri --no-format-executable --no-user-install \
-  test-kitchen \
-  kitchen-puppet \
-  kitchen-ansible \
-  kitchen-docker_cli;
+$GEM_CMD install $GEM_OPTS test-kitchen kitchen-puppet kitchen-ansible \
+  kitchen-docker_cli kitchen-vagrant;
 
 echo 'Virtual machine is now provisioned.';
 
